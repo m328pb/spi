@@ -11,7 +11,8 @@ platformio library manager. Just add to `platformio.ini` the line:
 lib_deps = https://github.com/328pb/spi
 ```
 
-- minimum implementation to make it lightweight
+- minimum implementation to make it lightweight (equivalent
+ARDUINO sketch takes 1182bytes vs 614bytes for example using this lib)
 
 ```bash
 AVR Memory Usage
