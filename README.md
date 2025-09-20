@@ -18,7 +18,7 @@ AVR Memory Usage
 ----------------
 Device: Unknown
 
-Program:     502 bytes
+Program:     518 bytes
 (.text + .data + .bootloader)
 
 Data:          0 bytes
@@ -26,6 +26,7 @@ Data:          0 bytes
 ```
 
 - no Arduino libs dependency
+- only one interface SPI0 is used
 - library do not use interrupts, just loop until response available
 
 ## usage

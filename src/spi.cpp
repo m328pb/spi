@@ -45,9 +45,10 @@ void SPI::init() {
   // Set SCK, MOSI and CS as output
   // CS as output in master mode is not affecting the SPI
   // when set as input CS can switch SPI mode to slave
-  DDRB = (1 << SCK) | (1 << MOSI) | (1 << cs); // SCK, MOSI, CS output
-  PORTB |= (1 << cs);                          // pullup disable slave
-  PORTB |= (1 << MISO);                        // MISO pullup
+  // pull up CS before switching to output, other way slave may wake up
+  cs_off();                                     // CS pullup: disable slave
+  DDRB |= (1 << SCK) | (1 << MOSI) | (1 << cs); // SCK, MOSI, CS output
+  DDRB &= ~(1 << MISO);                         // MISO input
 
   SPIE_backup = _SPCR & (1 << SPIE);
   _SPCR = ((0 &             // control register (p.256 ATmega328PB)
@@ -80,6 +81,7 @@ void SPI::init() {
 /*
  * @brief Send single byte to the slave device over SPI
  * @param data 8 bit data to send
+ * @return recived data
  * @details
  * This function sends single byte data to the slave device over I2C.
  * if auto_cs==1, handle chip selection line pullup/pulldown
@@ -112,10 +114,12 @@ uint8_t SPI::send(uint8_t cData) {
 void SPI::send_ln(uint8_t *data, uint8_t len) {
   uint8_t auto_cs_bckp = auto_cs;
   auto_cs = false;
+  cs_on();
   while (len--) {
     send(*data++);
   }
   auto_cs = auto_cs_bckp;
+  cs_off();
 }
 
 void SPI::cs_on() {

@@ -9,7 +9,7 @@ int main(){
 	SPI spi;
 	const char *txt_def = "SPI test: 1MHz";
 	const char *txt_4MHz = "SPI test: 4MHz";
-	spi.init(16,PB5,true);
+	spi.init(16,PB2,true);
 	spi.send_ln((uint8_t *)txt_def,15);
 	spi.init(4);
 	spi.send_ln((uint8_t *)txt_4MHz,15);
